@@ -7,21 +7,40 @@
         <title>Dinner</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="main.css">
 
     </head>
-    <body>
+    <body ng-controller="scheduler" ng-init="days = scaffold(60)" ng-cloak>
         <nav class="green">
             <div class="nav-wrapper container">
-                <div class="brand-logo center">When's Dinner?</div>
+                <div class="brand-logo center">{{ name ? ' ' + name : 'When\'s Dinner?' }}</div>
             </div>
         </nav>
-        <div class="section" ng-controller="scheduler" ng-init="days = scaffold(60)" ng-cloak>
+        <div class="section">
             <div class="container">
                 <p>
                     When everyone agrees on a date, Ali will send out a calendar invite.
                 </p>
 
-                <table>
+                <p ng-show="name && !forceForm">
+                    <a class="waves-effect waves-light btn" ng-click="forceForm = true">Change Name?</a>
+                </p>
+
+                <form name="f" ng-submit="setName(rawName)" validate ng-hide="name && !forceForm">
+                    <div class="row">
+                        <div class="input-field col m6">
+                            <input placeholder="First Name" id="firstName" name="firstName" ng-model="rawName" type="text" class="validate" required>
+                            <label for="firstName">Enter your First Name to Start</label>
+                        </div>
+                        <div class="input-field col m6">
+                            <button type="submit" class="waves-effect waves-light btn">
+                                {{ !name ? 'Set Name &amp; Pick Days' : 'Change Name' }}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <table ng-show="name">
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -32,7 +51,7 @@
 
                     <tbody>
                         <tr ng-repeat="day in days">
-                            <td>{{ day._d | date:'MMMM dd, yyyy'}} @ 7PM</td>
+                            <td>{{ day._d | date:'MMMM dd, yyyy'}} @ 7PM CST</td>
                             <td>Matt, Aaron, Ali, Imran</td>
                             <td>
                                 <a class="waves-effect waves-light btn">+</a>
