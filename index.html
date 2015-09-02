@@ -10,16 +10,17 @@
 
     </head>
     <body>
-        <nav class="green" role="navigation">
+        <nav class="green">
             <div class="nav-wrapper container">
                 <div class="brand-logo center">When's Dinner?</div>
             </div>
         </nav>
-        <div class="section" id="index-banner">
+        <div class="section" ng-controller="scheduler" ng-init="days = scaffold(60)" ng-cloak>
             <div class="container">
                 <p>
-                    Assume all dates are for 7pm.
+                    When everyone agrees on a date, Ali will send out a calendar invite.
                 </p>
+
                 <table>
                     <thead>
                         <tr>
@@ -30,8 +31,8 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>December 31, 2015</td>
+                        <tr ng-repeat="day in days">
+                            <td>{{ day._d | date:'MMMM dd, yyyy'}} @ 7PM</td>
                             <td>Matt, Aaron, Ali, Imran</td>
                             <td>
                                 <a class="waves-effect waves-light btn">+</a>
