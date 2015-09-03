@@ -8,7 +8,6 @@ app.controller('scheduler', function ($scope, $firebaseObject) {
 
     $scope.days = [];
     $scope.name;
-    $scope.nameKey;
     $scope.rawName;
     $scope.forceForm = false;
     $scope.data = $firebaseObject(ref);
@@ -31,7 +30,6 @@ app.controller('scheduler', function ($scope, $firebaseObject) {
      * @param {Boolean} noCache
      */
     $scope.setName = function (name, noCache) {
-        $scope.nameKey = name.toLowerCase();
         $scope.name = name;
         $scope.forceForm = false;
 
@@ -57,7 +55,12 @@ app.controller('scheduler', function ($scope, $firebaseObject) {
         return ((function () {
             if ($scope.data.attendees) {
                 return Object.keys($scope.data.attendees).reduce(function (arr, name) {
-                    if ($scope.data.attendees[name].indexOf(day.format('L')) >= 0 && arr.indexOf(name) < 0) {
+                    // verify item exists
+                    if (
+                        $scope.data.attendees[name].indexOf(day.format('L')) >= 0 &&
+                        arr.indexOf(name) < 0 &&
+                        name === $scope.name
+                    ) {
                         arr.push(name);
                     }
 
