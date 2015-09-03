@@ -19,7 +19,7 @@
         <div class="section">
             <div class="container">
                 <p>
-                    When everyone agrees on a date, Ali will send out a calendar invite. Use a good browser.
+                    When everyone agrees on a date, Ali will send out a calendar invite. Always use the exact name as before. Use a good browser.
                 </p>
 
                 <p ng-show="name && !forceForm">
@@ -56,8 +56,8 @@
                                 {{ outputAvailableNames(day) }}
                             </td>
                             <td>
-                                <a class="waves-effect waves-light btn" ng-show="isAvailable(data.attendees[name])">+</a>
-                                <a class="waves-effect waves-light btn red" ng-hide="isAvailable(data.attendees[name])">-</a>
+                                <a class="waves-effect waves-light btn" ng-show="isAvailable(day, data.attendees[name])" ng-click="book(name, day)">+</a>
+                                <a class="waves-effect waves-light btn red" ng-hide="isAvailable(day, data.attendees[name])" ng-click="unbook(name, day)">-</a>
                             </td>
                         </tr>
                     </tbody>
@@ -69,7 +69,7 @@
 
         <footer class="page-footer white">
             <div class="container">
-                <a href="https://github.com/mattlo/dinner"><i class="fa fa-github"></i> https://github.com/mattlo/dinner</a>
+                <a href="https://github.com/mattlo/dinner"><i class="fa fa-github"></i>https://github.com/mattlo/dinner</a>
             </div>
 
         </footer>
