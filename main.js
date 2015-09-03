@@ -36,7 +36,7 @@ app.controller('scheduler', function ($scope, $firebaseObject) {
         $scope.name = name;
         $scope.forceForm = false;
 
-        if (noCache) {
+        if (!noCache) {
             localStorage.setItem('name', name)
         }
     };
