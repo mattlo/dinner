@@ -1,13 +1,17 @@
-var app = angular.module('dinner', []);
+var app = angular.module('dinner', [
+    'firebase'
+]);
 
-app.controller('scheduler', function ($scope) {
-    var dbns = 'mlo';
+app.controller('scheduler', function ($scope, $firebaseObject) {
+    var ref = new Firebase('https://mattlo.firebaseio.com');
+    var DELIMITER = '|';
 
     $scope.days = [];
     $scope.name;
     $scope.nameKey;
     $scope.rawName;
     $scope.forceForm = false;
+    $scope.data = $firebaseObject(ref);
 
     /**
      * Scaffold out the next 3 months
@@ -23,8 +27,8 @@ app.controller('scheduler', function ($scope) {
 
     /**
      * Sets Name
-     * @param name
-     * @param noCache
+     * @param {String} name
+     * @param {Boolean} noCache
      */
     $scope.setName = function (name, noCache) {
         $scope.nameKey = name.toLowerCase();
@@ -34,6 +38,33 @@ app.controller('scheduler', function ($scope) {
         if (noCache) {
             localStorage.setItem('name', name)
         }
+    };
+
+    /**
+     * is user available?
+     * @param {String} userData
+     * @returns {Boolean}
+     */
+    $scope.isAvailable = function (userData) {
+        return true;
+    };
+
+    /**
+     * @param {moment} day
+     * @return {String}
+     */
+    $scope.outputAvailableNames = function (day) {
+        return ((function () {
+            if ($scope.data.attendees) {
+                return Object.keys($scope.data.attendees).reduce(function (arr, name) {
+                    if ($scope.data.attendees[name].indexOf(day.format('L')) >= 0 && arr.indexOf(name) < 0) {
+                        arr.push(name);
+                    }
+
+                    return arr;
+                }, []);
+            }
+        }()) || []).join(', ');
     };
 
     // get cached name
